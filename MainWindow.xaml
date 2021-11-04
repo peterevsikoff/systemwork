@@ -1,0 +1,120 @@
+﻿<Window x:Class="systemwork.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:systemwork"
+        mc:Ignorable="d"
+        Title="Система работы" Icon="plan.jpg" Height="650" Width="1000" WindowState="Maximized">
+    <Window.Resources>
+        <Style TargetType="DataGridRow">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
+                                 Color="Black"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                 Color="Transparent"/>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+    <Grid Background="Honeydew">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Image Source="plan.jpg"></Image>
+            <TextBlock x:Name="lbl_status" Grid.Column="1" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+            <Label x:Name="lbl_task_today" Grid.Column="2" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+            <Grid Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblDate" Grid.Column="1" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                <Button x:Name="btn_date_rev" Click="btn_date_rev_Click" Background="Transparent" BorderBrush="Transparent" Height="40" Width="40">
+                    <Image Source="arrowleft.png"></Image>
+                </Button>
+                <Button x:Name="btn_date_forw" Click="btn_date_forw_Click" Background="Transparent" BorderBrush="Transparent" Grid.Column="2" Height="40" Width="40">
+                    <Image Source="arrowright.png"></Image>
+                </Button>
+            </Grid>
+        </Grid>
+        <TabControl Grid.Row="1">
+            <TabItem Header="Список задач">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="9*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <DataGrid x:Name="dtgTask" FontFamily="Times New Roman" AutoGenerateColumns="False" Margin="10" LoadingRow="gridProducts_LoadingRow" CanUserAddRows="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="TextBlock" x:Key="WrapText">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Header="Отметка о выполнении" Binding="{Binding IsExecute}"></DataGridCheckBoxColumn>
+                            <DataGridTextColumn Header="Период" IsReadOnly="True" Binding="{Binding Per}"></DataGridTextColumn>
+                            <DataGridTextColumn Width="2*" IsReadOnly="True" Header="Задача" Binding="{Binding Task}" ElementStyle="{StaticResource WrapText}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Комментарий" Width="*" Binding="{Binding Comment}" ElementStyle="{StaticResource WrapText}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnSaveChanged" IsEnabled="False" Grid.Column="1" Margin="10" Content="Сохранить отчет" Click="btnSaveChanged_Click"></Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Настройки">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock TextWrapping="Wrap" Text="ЕЖЕНЕДЕЛЬНО оповещать в следующий день недели (+/- 1 день):" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                    <ComboBox x:Name="cmbeachweek" Grid.Column="1" Margin="10" FontSize="16" VerticalAlignment="Center">
+                        <ComboBoxItem Content="понедельник"></ComboBoxItem>
+                        <ComboBoxItem Content="вторник"></ComboBoxItem>
+                        <ComboBoxItem Content="среда"></ComboBoxItem>
+                        <ComboBoxItem Content="четверг"></ComboBoxItem>
+                        <ComboBoxItem Content="пятница"></ComboBoxItem>
+                        <ComboBoxItem Content="суббота"></ComboBoxItem>
+                        <ComboBoxItem Content="воскресенье"></ComboBoxItem>
+                    </ComboBox>
+                    <TextBlock TextWrapping="Wrap" Text="ЕЖЕМЕСЯЧНО оповещать в данный день месяца (+/- 1 день)" Grid.Row="1" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                    <TextBox x:Name="txt_eachmonth" Grid.Row="1" Grid.Column="1" Margin="10" FontSize="16" VerticalAlignment="Center"></TextBox>
+                    <TextBlock TextWrapping="Wrap" Text="ЕЖЕКВАРТАЛЬНО оповещать в данный день месяцев (март, июнь, сентябрь, декабрь) (+/- 1 день)" Grid.Row="2" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                    <TextBox x:Name="txt_eachkv" Grid.Row="2" Grid.Column="1" Margin="10" FontSize="16" VerticalAlignment="Center"></TextBox>
+                    <TextBlock TextWrapping="Wrap" Text="РАЗ В ПОЛГОДА оповещать в данный день месяцев (июнь, декабрь) (+/- 1 день)" Grid.Row="3" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                    <TextBox x:Name="txt_eachhalfyear" Grid.Row="3" Grid.Column="1" Margin="10" FontSize="16" VerticalAlignment="Center"></TextBox>
+                    <TextBlock TextWrapping="Wrap" Text="ЕЖЕГОДНО оповещать в данный день месяца (декабрь) (+/- 1 день)" Grid.Row="4" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                    <TextBox x:Name="txt_eachyear" Grid.Row="4" Grid.Column="1" Margin="10" FontSize="16" VerticalAlignment="Center"></TextBox>
+                    <TextBlock TextWrapping="Wrap" Text="Должность" Grid.Row="5" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                    <ComboBox x:Name="cmb_status" Grid.Row="5" Grid.Column="1" FontSize="18" VerticalAlignment="Center" Margin="10,0,0,0"></ComboBox>
+                    <Button x:Name="btn_Save_Options" Grid.Column="1" Grid.Row="6" Margin="20" Content="Сохранить изменения" FontSize="18" Click="btn_Save_Options_Click"></Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Label Grid.Row="3" Content="p.evsikoff development, 2021" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"></Label>
+    </Grid>
+</Window>
